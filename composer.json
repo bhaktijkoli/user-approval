@@ -1,0 +1,14 @@
+{
+    "name": "bhaktijkoli/user-approval",
+    "description": "User Approval Laravel Package",
+    "keywords": ["user approval", "package", "approval", "laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bhaktij Koli",
+            "email": "bhaktijkoli121@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
