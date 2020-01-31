@@ -23,4 +23,18 @@ trait CanApprove
             $approval->save();
         }
     }
+    public function onlyPending()
+    {
+      return Approval::where('approver_type', get_class())->where('approver_id', $this->getKey())->where('status', '0');
+    }
+
+    public function onlyApproved()
+    {
+      return Approval::where('approver_type', get_class())->where('approver_id', $this->getKey())->where('status', '1');
+    }
+    
+    public function onlyRejected()
+    {
+      return Approval::where('approver_type', get_class())->where('approver_id', $this->getKey())->where('status', '2');
+    }
 }
