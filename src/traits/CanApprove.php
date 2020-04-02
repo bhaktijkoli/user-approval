@@ -34,6 +34,25 @@ trait CanApprove
       }
     }
 
+    public function hasApproved(Model $model)
+    {
+      $approval = Approval::where('type', get_class($model))->where('type_id', $model->getKey())->where('approver_type', get_class())->where('approver_id', $this->getKey())->first();
+      if($approval) {
+        return $approval->status == '1';
+      }
+      return false;
+    }
+
+    public function hasRejected(Model $model)
+    {
+      $approval = Approval::where('type', get_class($model))->where('type_id', $model->getKey())->where('approver_type', get_class())->where('approver_id', $this->getKey())->first();
+      if($approval) {
+        return $approval->status == '2';
+      }
+      return false;
+    }
+
+
     public function onlyPending()
     {
       return Approval::where('approver_type', get_class())->where('approver_id', $this->getKey())->where('status', '0');
