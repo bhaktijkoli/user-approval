@@ -23,6 +23,17 @@ trait CanApprove
             $approval->save();
         }
     }
+
+    public function canApprove(Model $model)
+    {
+      $approval = Approval::where('type', get_class($model))->where('type_id', $model->getKey())->where('approver_type', get_class())->where('approver_id', $this->getKey())->first();
+      if($approval) {
+          return true;
+      } else {
+        return false;
+      }
+    }
+
     public function onlyPending()
     {
       return Approval::where('approver_type', get_class())->where('approver_id', $this->getKey())->where('status', '0');
@@ -32,7 +43,7 @@ trait CanApprove
     {
       return Approval::where('approver_type', get_class())->where('approver_id', $this->getKey())->where('status', '1');
     }
-    
+
     public function onlyRejected()
     {
       return Approval::where('approver_type', get_class())->where('approver_id', $this->getKey())->where('status', '2');

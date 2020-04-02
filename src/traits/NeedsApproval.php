@@ -38,4 +38,14 @@ trait NeedsApproval
     }
     return $isApproved;
   }
+  
+  public function isRejected()
+  {
+    $approvals = Approval::where('type', get_class())->where('type_id', $this->getKey())->get();
+    $isRejected = false;
+    foreach ($approvals as $approval) {
+      if($approval->status == '2') $isRejected = true;
+    }
+    return $isRejected;
+  }
 }
