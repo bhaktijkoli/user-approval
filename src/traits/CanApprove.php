@@ -52,6 +52,10 @@ trait CanApprove
       return false;
     }
 
+    public function allApprovals()
+    {
+      return Approval::where('approver_type', get_class())->where('approver_id', $this->getKey());
+    }
 
     public function onlyPending()
     {
