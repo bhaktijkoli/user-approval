@@ -38,9 +38,4 @@ trait NeedsApproval
     }
     return $isApproved;
   }
-
-  public function getType()
-  {
-    return $this->belongsTo($this->type, 'type_id');
-  }
 }
