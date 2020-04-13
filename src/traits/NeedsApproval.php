@@ -16,6 +16,9 @@ trait NeedsApproval
     $approval->approver_id = $approver->getKey();
     $approval->status = '0';
     $approval->save();
+    if(method_exists($this, 'requested')) {
+      $this->requested($approver);
+    }
   }
 
   public function getApprovers()
@@ -38,7 +41,7 @@ trait NeedsApproval
     }
     return $isApproved;
   }
-  
+
   public function isRejected()
   {
     $approvals = Approval::where('type', get_class())->where('type_id', $this->getKey())->get();
@@ -47,5 +50,20 @@ trait NeedsApproval
       if($approval->status == '2') $isRejected = true;
     }
     return $isRejected;
+  }
+
+  public function requested(Model $approver)
+  {
+
+  }
+
+  public function approved(Model $approver)
+  {
+
+  }
+
+  public function rejected(Model $approver)
+  {
+
   }
 }
