@@ -21,12 +21,45 @@ trait NeedsApproval
     }
   }
 
-  public function getApprovers()
+  public function getAllApprovers()
   {
     $approvals = Approval::where('type', get_class())->where('type_id', $this->getKey())->get();
     $approvers = collect();
     foreach ($approvals as $approval) {
-      $approver = new $approval->approver_type;
+      $approver = call_user_func(array( $approval->approver_type, 'find' ), $approval->approver_id);
+      $approvers->add($approver);
+    }
+    return $approvers;
+  }
+
+  public function getApprovers()
+  {
+    $approvals = Approval::where('type', get_class())->where('type_id', $this->getKey())->where('status', '1')->get();
+    $approvers = collect();
+    foreach ($approvals as $approval) {
+      $approver = call_user_func(array( $approval->approver_type, 'find' ), $approval->approver_id);
+      $approvers->add($approver);
+    }
+    return $approvers;
+  }
+
+  public function getPendingApprovers()
+  {
+    $approvals = Approval::where('type', get_class())->where('type_id', $this->getKey())->where('status', '0')->get();
+    $approvers = collect();
+    foreach ($approvals as $approval) {
+      $approver = call_user_func(array( $approval->approver_type, 'find' ), $approval->approver_id);
+      $approvers->add($approver);
+    }
+    return $approvers;
+  }
+
+  public function getRejectors()
+  {
+    $approvals = Approval::where('type', get_class())->where('type_id', $this->getKey())->where('status', '2')->get();
+    $approvers = collect();
+    foreach ($approvals as $approval) {
+      $approver = call_user_func(array( $approval->approver_type, 'find' ), $approval->approver_id);
       $approvers->add($approver);
     }
     return $approvers;
